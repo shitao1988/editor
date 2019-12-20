@@ -22,15 +22,15 @@ import layout from '../../config/layout.json'
 
 function layoutGroups(layerType) {
   const layerGroup = {
-    title: 'Layer',
+    title: '图层',
     type: 'layer'
   }
   const filterGroup = {
-    title: 'Filter',
+    title: '筛选',
     type: 'filter'
   }
   const editorGroup = {
-    title: 'JSON Editor',
+    title: 'JSON预览',
     type: 'jsoneditor'
   }
   return [layerGroup, filterGroup].concat(layout[layerType].groups).concat([editorGroup])
@@ -245,7 +245,7 @@ export default class LayerEditor extends React.Component {
       <header>
         <div className="layer-header">
           <h2 className="layer-header__title">
-            Layer: {this.props.layer.id}
+            图层: {this.props.layer.id}
           </h2>
           <div className="layer-header__info">
             <Wrapper

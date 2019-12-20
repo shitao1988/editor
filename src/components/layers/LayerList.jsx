@@ -166,7 +166,7 @@ class LayerListContainer extends React.Component {
           onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
-        <span className="maputnik-layer-list-header-title">Layers</span>
+        <span className="maputnik-layer-list-header-title">图层</span>
         <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
@@ -174,7 +174,7 @@ class LayerListContainer extends React.Component {
               id="skip-menu"
               onClick={this.toggleLayers}
               className="maputnik-button">
-              {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
+              {this.state.areAllGroupsExpanded === true ? "收缩" : "展开"}
             </button>
           </div>
         </div>
@@ -184,7 +184,7 @@ class LayerListContainer extends React.Component {
               onClick={this.toggleModal.bind(this, 'add')}
               data-wd-key="layer-list:add-layer"
               className="maputnik-button maputnik-button-selected">
-             Add Layer
+             添加图层
             </button>
           </div>
         </div>

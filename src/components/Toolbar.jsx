@@ -173,26 +173,26 @@ export default class Toolbar extends React.Component {
             <img src={logoImage} alt="Maputnik" />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
-              <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
+              <span className="maputnik-toolbar-version">{pkgJson.version}</span>
             </h1>
           </a>
         </div>
         <div className="maputnik-toolbar__actions">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
             <MdOpenInBrowser />
-            <IconText>Open</IconText>
+            <IconText>打开</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
             <MdFileDownload />
-            <IconText>Export</IconText>
+            <IconText>导出</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
             <MdLayers />
-            <IconText>Data Sources</IconText>
+            <IconText>数据源</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
             <MdSettings />
-            <IconText>Style Settings</IconText>
+            <IconText>样式设置</IconText>
           </ToolbarAction>
 
           <ToolbarSelect wdKey="nav:inspect">
@@ -209,14 +209,14 @@ export default class Toolbar extends React.Component {
             </select>
           </ToolbarSelect>
 
-          <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
+          <ToolbarLink href={""}>
             <MdHelpOutline />
-            <IconText>Help</IconText>
+            <IconText>帮助</IconText>
           </ToolbarLink>
-          <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
+          {/* <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
             <MdAssignmentTurnedIn />
             <IconText>Take the Maputnik Survey</IconText>
-          </ToolbarLinkHighlighted>
+          </ToolbarLinkHighlighted> */}
         </div>
       </div>
     </div>
