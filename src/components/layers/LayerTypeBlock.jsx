@@ -33,7 +33,7 @@ class LayerTypeBlock extends React.Component {
       {!this.props.disabled &&
         <SelectInput
           options={[
-            ['background', '背景'],
+          ['background', '背景'],
           ['fill', '面'],
           ['line', '线'],
           ['symbol', '标注'],
