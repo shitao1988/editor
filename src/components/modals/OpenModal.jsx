@@ -193,19 +193,19 @@ class OpenModal extends React.Component {
           data-wd-key="open-modal"
           isOpen={this.props.isOpen}
           onOpenToggle={() => this.onOpenToggle()}
-          title={'Open Style'}
+          title={'加载样式'}
         >
           {errorElement}
           <section className="maputnik-modal-section">
-            <h2>Upload Style</h2>
-            <p>Upload a JSON style from your computer.</p>
+            <h2>上传样式文件</h2>
+            <p>本地上传一个json文件.</p>
             <FileReaderInput onChange={this.onUpload} tabIndex="-1">
-              <Button className="maputnik-upload-button"><MdFileUpload /> Upload</Button>
+              <Button className="maputnik-upload-button"><MdFileUpload /> 上传</Button>
             </FileReaderInput>
           </section>
 
           <section className="maputnik-modal-section">
-            <h2>Load from URL</h2>
+            <h2>通过URL加载</h2>
             <p>
               Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
             </p>

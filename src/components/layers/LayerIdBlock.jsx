@@ -14,7 +14,7 @@ class LayerIdBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"ID"} fieldSpec={latest.layer.id}
+    return <InputBlock label={"编号"} fieldSpec={latest.layer.id}
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >

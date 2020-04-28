@@ -16,7 +16,7 @@ class MetadataBlock extends React.Component {
     };
 
     return <InputBlock
-      label={"Comments"}
+      label={"备注"}
       fieldSpec={fieldSpec}
       data-wd-key="layer-comment"
     >

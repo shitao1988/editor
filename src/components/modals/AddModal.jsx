@@ -124,7 +124,7 @@ class AddModal extends React.Component {
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={'Add Layer'}
+      title={'添加图层'}
       data-wd-key="modal:add-layer"
       className="maputnik-add-modal"
     >

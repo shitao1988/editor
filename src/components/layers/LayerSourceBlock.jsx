@@ -21,7 +21,7 @@ class LayerSourceBlock extends React.Component {
 
   render() {
     return <InputBlock
-      label={"Source"}
+      label={"数据源"}
       fieldSpec={latest.layer.source}
       error={this.props.error}
       data-wd-key={this.props.wdKey}
