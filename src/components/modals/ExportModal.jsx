@@ -62,6 +62,7 @@ class ExportModal extends React.Component {
     }
     this.props.onStyleChanged(changedStyle)
   }
+  
 
 
   render() {
