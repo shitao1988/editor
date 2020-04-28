@@ -1,6 +1,8 @@
 {
     "version": 8,
     "metadata": {},
+    "center": [120.569, 32.3888],
+    "zoom": 12.6,
     "sources": {
       "img_w": {
         "type": "raster",
