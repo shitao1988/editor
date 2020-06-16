@@ -10,43 +10,43 @@ var server;
 var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 
 exports.config = {
+  runner: 'local',
+  path: '/wd/hub',
   specs: [
     './test/functional/index.js'
   ],
-  exclude: [
-  ],
   maxInstances: 10,
-  capabilities: [{
-    maxInstances: 5,
-    browserName: 'chrome'
-  }],
-  sync: true,
-  logLevel: 'verbose',
-  coloredLogs: true,
+  capabilities: [
+    {
+      maxInstances: 5,
+      browserName: (process.env.BROWSER || 'chrome'),
+    }
+  ],
+  logLevel: 'info',
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
-  // Note: This is here because @orangemug currently runs Maputnik inside a docker container.
-  host: process.env.DOCKER_HOST || "0.0.0.0",
-  baseUrl: 'http://localhost',
-  waitforTimeout: 10000,
-  connectionRetryTimeout: 90000,
-  connectionRetryCount: 3,
+  hostname: process.env.DOCKER_HOST || "0.0.0.0",
   framework: 'mocha',
   reporters: ['spec'],
   mochaOpts: {
     ui: 'bdd',
     // Because we don't know how long the initial build will take...
-    timeout: 4*60*1000
+    timeout: 4*60*1000,
   },
   onPrepare: function (config, capabilities) {
     return new Promise(function(resolve, reject) {
       var compiler = webpack(webpackConfig);
+      const serverHost = "0.0.0.0";
+
       server = new WebpackDevServer(compiler, {
+        host: serverHost,
+        disableHostCheck: true,
         stats: {
           colors: true
         }
       });
-      server.listen(testConfig.port, (isDocker() ? "0.0.0.0" : "localhost"), function(err) {
+
+      server.listen(testConfig.port, serverHost, function(err) {
         if(err) {
           reject(err);
         }
@@ -57,6 +57,15 @@ exports.config = {
     })
   },
   onComplete: function(exitCode) {
-    server.close()
+    return new Promise(function(resolve, reject) {
+      server.close(function (err) {
+        if (err) {
+          reject(err)
+        }
+        else {
+          resolve();
+        }
+      })
+    });
   }
 }

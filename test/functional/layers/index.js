@@ -11,8 +11,9 @@ describe("layers", function() {
       "geojson:example",
       "raster:raster"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link");
+    elem.waitForExist();
     browser.flushReactUpdates();
 
     helper.modal.addLayer.open();
@@ -33,7 +34,8 @@ describe("layers", function() {
         },
       ]);
 
-      browser.click(wd.$("layer-list-item:"+id+":delete", ""));
+      const elem = $(wd.$("layer-list-item:"+id+":delete", ""));
+      elem.click();
 
       styleObj = helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
@@ -54,7 +56,8 @@ describe("layers", function() {
         },
       ]);
 
-      browser.click(wd.$("layer-list-item:"+id+":copy", ""));
+      const elem = $(wd.$("layer-list-item:"+id+":copy", ""));
+      elem.click();
 
       styleObj = helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
@@ -83,7 +86,8 @@ describe("layers", function() {
         },
       ]);
 
-      browser.click(wd.$("layer-list-item:"+id+":toggle-visibility", ""));
+      const elem = $(wd.$("layer-list-item:"+id+":toggle-visibility", ""));
+      elem.click();
 
       styleObj = helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
@@ -96,7 +100,7 @@ describe("layers", function() {
         },
       ]);
 
-      browser.click(wd.$("layer-list-item:"+id+":toggle-visibility", ""));
+      elem.click();
 
       styleObj = helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
@@ -111,12 +115,6 @@ describe("layers", function() {
     })
   })
 
-  describe("grouped", function() {
-    it("with underscore")
-    it("no without underscore")
-    it("double underscore only grouped once")
-  })
-
   describe("tooltips", function() {
   })
 
@@ -126,20 +124,18 @@ describe("layers", function() {
 
   describe('background', function () {
 
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "background"
       })
 
-      browser.waitUntil(function() {
-        var styleObj = helper.getStyleStore(browser);
-        assert.deepEqual(styleObj.layers, [
-          {
-            "id": id,
-            "type": 'background'
-          }
-        ]);
-      });
+      var styleObj = helper.getStyleStore(browser);
+      assert.deepEqual(styleObj.layers, [
+        {
+          "id": id,
+          "type": 'background'
+        }
+      ]);
     });
 
     describe("modify", function() {
@@ -147,11 +143,13 @@ describe("layers", function() {
         // Setup
         var id = uuid();
 
-        browser.selectByValue(wd.$("add-layer.layer-type", "select"), "background");
+        const selectBox = $(wd.$("add-layer.layer-type", "select"));
+        selectBox.selectByAttribute('value', "background");
         browser.flushReactUpdates();
         browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
 
-        browser.click(wd.$("add-layer"));
+        const elem = $(wd.$("add-layer"));
+        elem.click();
 
         var styleObj = helper.getStyleStore(browser);
         assert.deepEqual(styleObj.layers, [
@@ -169,11 +167,13 @@ describe("layers", function() {
         it("id", function() {
           var bgId = createBackground();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId))
+          const elem = $(wd.$("layer-list-item:background:"+bgId));
+          elem.click();
 
           var id = uuid();
           browser.setValueSafe(wd.$("layer-editor.layer-id", "input"), "foobar:"+id)
-          browser.click(wd.$("min-zoom"))
+          const elem2 = $(wd.$("min-zoom"));
+          elem2.click();
 
           var styleObj = helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
@@ -184,15 +184,14 @@ describe("layers", function() {
           ]);
         });
 
-        // NOTE: This needs to be removed from the code
-        it("type");
-
         it("min-zoom", function() {
           var bgId = createBackground();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId))
-          browser.setValueSafe(wd.$("min-zoom", "input"), 1)
-          browser.click(wd.$("layer-editor.layer-id", "input"));
+          const elem = $(wd.$("layer-list-item:background:"+bgId));
+          elem.click();
+          browser.setValueSafe(wd.$("min-zoom", 'input[type="text"]'), 1)
+          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
+          elem2.click();
 
           var styleObj = helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
@@ -220,9 +219,11 @@ describe("layers", function() {
         it("max-zoom", function() {
           var bgId = createBackground();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId))
-          browser.setValueSafe(wd.$("max-zoom", "input"), 1)
-          browser.click(wd.$("layer-editor.layer-id", "input"));
+          const elem = $(wd.$("layer-list-item:background:"+bgId));
+          elem.click();
+          browser.setValueSafe(wd.$("max-zoom", 'input[type="text"]'), 1)
+          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
+          elem2.click();
 
           var styleObj = helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
@@ -238,9 +239,11 @@ describe("layers", function() {
           var bgId = createBackground();
           var id = uuid();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId));
+          const elem = $(wd.$("layer-list-item:background:"+bgId));
+          elem.click();
           browser.setValueSafe(wd.$("layer-comment", "textarea"), id);
-          browser.click(wd.$("layer-editor.layer-id", "input"));
+          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
+          elem2.click();
 
           var styleObj = helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
@@ -326,7 +329,7 @@ describe("layers", function() {
   });
 
   describe('fill', function () {
-    it.skip("add", function() {
+    it("add", function() {
       // browser.debug();
 
       var id = helper.modal.addLayer.fill({
@@ -349,7 +352,7 @@ describe("layers", function() {
   });
 
   describe('line', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "line",
         layer: "example"
@@ -372,7 +375,7 @@ describe("layers", function() {
   });
 
   describe('symbol', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "symbol",
         layer: "example"
@@ -390,7 +393,7 @@ describe("layers", function() {
   });
 
   describe('raster', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "raster",
         layer: "raster"
@@ -408,7 +411,7 @@ describe("layers", function() {
   });
 
   describe('circle', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "circle",
         layer: "example"
@@ -427,7 +430,7 @@ describe("layers", function() {
   });
 
   describe('fill extrusion', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "fill-extrusion",
         layer: "example"
@@ -445,12 +448,12 @@ describe("layers", function() {
   });
 
 
-  describe.skip("groups", function() {
+  describe("groups", function() {
     it("simple", function() {
-      browser.url(config.baseUrl+"?debug&style="+getStyleUrl([
+      browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ]));
-      browser.alertAccept();
+      browser.acceptAlert();
 
       helper.modal.addLayer.open();
       var aId = helper.modal.addLayer.fill({
@@ -466,22 +469,22 @@ describe("layers", function() {
 
       helper.modal.addLayer.open();
       var bId = helper.modal.addLayer.fill({
-        id: "foo_baz",
+        id: "foo_bar_baz",
         type: "background"
       })
 
-      browser.waitForExist(wd.$("layer-list-group:foo-0"));
+      const groupEl = $(wd.$("layer-list-group:foo-0"));
+      groupEl.isDisplayed();
 
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo")), false);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_bar")), false);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_baz")), false);
+      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), false);
+      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), false);
 
-      browser.click(wd.$("layer-list-group:foo-0"));
+      groupEl.click();
 
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo")), true);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_bar")), true);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_baz")), true);
+      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), true);
     })
   })
 });
-

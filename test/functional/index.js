@@ -1,21 +1,29 @@
 var config      = require("../config/specs");
 var helper      = require("./helper");
 
-require("./util/webdriverio-ext");
-
 
 describe('maputnik', function() {
+
+  before(function(done) {
+    require("./util/webdriverio-ext");
+    helper.startGeoserver(done);
+  });
+
+  after(function(done) {
+    helper.stopGeoserver(done);
+  });
 
   beforeEach(function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example",
       "raster:raster"
     ]));
-    browser.alertAccept();
+    browser.acceptAlert();
     browser.execute(function() {
       localStorage.setItem("survey", true);
     });
-    browser.waitForExist(".maputnik-toolbar-link");
+    const elem = $(".maputnik-toolbar-link");
+    elem.waitForExist();
     browser.flushReactUpdates();
   });
 
@@ -29,6 +37,8 @@ describe('maputnik', function() {
   require("./map");
   require("./modals");
   require("./screenshots");
+  require("./accessibility");
+  require("./keyboard");
   // ------------------------
 
 });

@@ -1,5 +1,10 @@
 .maputnik-filter-editor-wrapper {
   padding: $margin-3;
+  overflow: hidden;
+
+  .maputnik-input-block {
+    margin: 0;
+  }
 }
 
 .maputnik-filter-editor {
@@ -73,3 +78,19 @@
   width: 92.5%;
 }
 
+.maputnik-radio-as-button {
+  @extend .maputnik-button;
+
+  border: solid 1px transparent;
+
+  &:focus-within {
+    border: solid 1px $color-white;
+  }
+
+  input {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin: 0;
+  }
+}
