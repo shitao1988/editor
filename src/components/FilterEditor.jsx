@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../libs/filterops.js'
 import {mdiTableRowPlusAfter} from '@mdi/js';
+import {isEqual} from 'lodash';
 
-import {latest, validate, migrate} from '@mapbox/mapbox-gl-style-spec'
-import FieldSelect from './FieldSelect'
+import {latest, validate, migrate, convertFilter} from '@mapbox/mapbox-gl-style-spec'
+import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
 import FilterEditorBlock from './FilterEditorBlock'
-import Button from './Button'
+import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
 import {mdiFunctionVariant} from '@mdi/js';
@@ -61,24 +62,19 @@ function createStyleFromFilter (filter) {
   };
 }
 
-/**
- * This is doing way more work than we need it to, however validating a whole
- * style if the only thing that's exported from mapbox-gl-style-spec at the
- * moment. Not really an issue though as it take ~0.1ms to calculate.
- */
+const FILTER_OPS = [
+  "all",
+  "any",
+  "none"
+];
+
+// If we convert a filter that is an expression to an expression it'll remain the same in value
 function checkIfSimpleFilter (filter) {
-  if (!filter || !combiningFilterOps.includes(filter[0])) {
-    return false;
+  if (filter.length === 1 && FILTER_OPS.includes(filter[0])) {
+    return true;
   }
-
-  // Because "none" isn't supported by the next expression syntax we can test
-  // with ["none", ...] because it'll return false if it's a new style
-  // expression.
-  const moddedFilter = ["none", ...filter.slice(1)];
-  const tmpStyle = createStyleFromFilter(moddedFilter)
-
-  const errors = validate(tmpStyle);
-  return (errors.length < 1);
+  const expression = convertFilter(filter);
+  return !isEqual(expression, filter);
 }
 
 function hasCombiningFilter(filter) {
@@ -191,7 +187,7 @@ export default class FilterEditor extends React.Component {
         <p>
           Nested filters are not supported.
         </p>
-        <Button
+        <InputButton
           onClick={this.makeExpression}
           title="Convert to expression"
         >
@@ -199,7 +195,7 @@ export default class FilterEditor extends React.Component {
             <path fill="currentColor" d={mdiFunctionVariant} />
           </svg>
           Upgrade to expression
-        </Button>
+        </InputButton>
       </div>
     }
     else if (displaySimpleFilter) {
@@ -209,7 +205,7 @@ export default class FilterEditor extends React.Component {
 
       const actions = (
         <div>
-          <Button
+          <InputButton
             onClick={this.makeExpression}
             title="Convert to expression"
             className="maputnik-make-zoom-function"
@@ -217,7 +213,7 @@ export default class FilterEditor extends React.Component {
             <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
               <path fill="currentColor" d={mdiFunctionVariant} />
             </svg>
-          </Button>
+          </InputButton>
         </div>
       );
 
@@ -249,7 +245,7 @@ export default class FilterEditor extends React.Component {
             label={"Filter"}
             action={actions}
           >
-            <FieldSelect
+            <InputSelect
               value={combiningOp}
               onChange={this.onFilterPartChanged.bind(this, 0)}
               options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
@@ -260,7 +256,7 @@ export default class FilterEditor extends React.Component {
             key="buttons"
             className="maputnik-filter-editor-add-wrapper"
           >
-            <Button
+            <InputButton
               data-wd-key="layer-filter-button"
               className="maputnik-add-filter"
               onClick={this.addFilterItem}
@@ -268,7 +264,7 @@ export default class FilterEditor extends React.Component {
               <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
                 <path fill="currentColor" d={mdiTableRowPlusAfter} />
               </svg> Add filter
-            </Button>
+            </InputButton>
           </div>
           <div
             key="doc"
